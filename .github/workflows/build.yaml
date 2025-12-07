@@ -1,4 +1,4 @@
-name: yarn build
+name: Build Extension
 on:
   pull_request:
     branches:
@@ -9,19 +9,25 @@ on:
   workflow_dispatch: {}
 
 jobs:
-  npm-build:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: 20
-      - name: Enable Corepack
-        run: corepack enable
-      - name: Run install
-        uses: borales/actions-yarn@v4
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build extension
+        run: npm run build
+        
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
         with:
-          cmd: install
-      - run: yarn lint
-      - run: yarn zip
-      # Add publishing steps
+          name: extension-build
+          path: build/

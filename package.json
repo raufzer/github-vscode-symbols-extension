@@ -25,10 +25,10 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js --progress",
     "lint": "eslint src/**/*.ts",
-    "lint:fix": "yarn run lint --fix",
+    "lint:fix": "npm run lint -- --fix",
     "start": "cross-env NODE_ENV=development webpack --config ./webpack.config.js --watch",
-    "zip": "yarn run build && zip -r build/File_Icon_For_GitHub_And_GitLab_$npm_package_version.zip build",
-    "zip:firefox": "yarn run build && web-ext build -s build/"
+    "zip": "npm run build && zip -r build/File_Icon_For_GitHub_And_GitLab_$npm_package_version.zip build",
+    "zip:firefox": "npm run build && web-ext build -s build/"
   },
   "dependencies": {
     "dom-loaded": "^3.1.0",
