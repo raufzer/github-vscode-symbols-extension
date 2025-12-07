@@ -2,10 +2,15 @@ import domLoaded from 'dom-loaded';
 import select from 'select-dom';
 import mobile from 'is-mobile';
 import { observe } from 'selector-observer';
-import { getIconClass, type ColorMode } from 'atom-file-icons';
 
 import { StorageKey } from './background';
 import '../css/icons.css';
+import {
+  createFileIconElement,
+  createFolderIconElement,
+  injectIconStyles,
+  preloadCommonIcons,
+} from './icons/svg-icon-loader';
 
 let colorsDisabled = false;
 let darkMode = false;
@@ -16,14 +21,6 @@ const enum Host {
   GitLab = 'gitlab',
   Others = 'others',
 }
-
-const fonts = [
-  { name: 'FontAwesome', path: 'fonts/fontawesome.woff2' },
-  { name: 'Mfizz', path: 'fonts/mfixx.woff2' },
-  { name: 'Devicons', path: 'fonts/devopicons.woff2' },
-  { name: 'file-icons', path: 'fonts/file-icons.woff2' },
-  { name: 'Octicons Regular', path: 'fonts/octicons.woff2' },
-];
 
 const isGithubPage = () => /.*github.*/.test(window.location.hostname);
 
@@ -93,90 +90,146 @@ const { filenameSelector, iconSelector, host } = getSelector(
 const isMobile = mobile();
 const isGitHub = host === Host.GitHub;
 
-const loadFonts = () => {
-  fonts.forEach((font) => {
-    const fontFace = new FontFace(
-      font.name,
-      `url("${chrome.runtime.getURL(font.path)}") format("woff2")`,
-      {
-        style: 'normal',
-        weight: 'normal',
-      },
-    );
-
-    fontFace
-      .load()
-      .then((loadedFontFace) => document.fonts.add(loadedFontFace));
-  });
-};
-
 const getGitHubMobileFilename = (filenameDom: HTMLElement) =>
   Array.from(filenameDom.childNodes)
     .filter((node) => node.nodeType === node.TEXT_NODE)
     .map((node) => node.nodeValue?.trim() || '')
     .join('');
 
-const replaceIcon = ({
+/**
+ * Check if an element or its children represent a folder
+ */
+const isFolder = (iconDom: HTMLElement, filenameDom: HTMLElement): boolean => {
+  // Check the icon DOM itself first
+  if (iconDom.classList.contains('octicon-file-directory')) {
+    return true;
+  }
+
+  // Check for any SVG with directory class
+  const directorySvg = iconDom.querySelector('svg.octicon-file-directory, svg.icon-directory');
+  if (directorySvg) {
+    return true;
+  }
+
+  // Check if icon is an SVG element itself
+  if (iconDom.tagName === 'svg') {
+    if (iconDom.classList.contains('octicon-file-directory') ||
+      iconDom.classList.contains('icon-directory')) {
+      return true;
+    }
+  }
+
+  // Check TreeView folder indicators
+  const treeViewParent = iconDom.closest('[data-tree-entry-type]');
+  if (treeViewParent?.getAttribute('data-tree-entry-type') === 'tree') {
+    return true;
+  }
+
+  // Check for row with tree link
+  const row = iconDom.closest('[role="row"]');
+  if (row) {
+    const link = row.querySelector('a[href*="/tree/"]');
+    if (link) {
+      return true;
+    }
+  }
+
+  // Check if filename has trailing slash
+  const filename = filenameDom.textContent?.trim() || '';
+  if (filename.endsWith('/')) {
+    return true;
+  }
+
+  // Check link href for tree pattern
+  const closestLink = filenameDom.closest('a') || iconDom.closest('a');
+  if (closestLink?.href.includes('/tree/')) {
+    return true;
+  }
+
+  // Check parent row for directory link
+  const parentRow = filenameDom.closest('tr, div[role="row"]');
+  if (parentRow) {
+    const treeLink = parentRow.querySelector('a[href*="/tree/"]');
+    if (treeLink) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+// Track processed icons to avoid re-processing
+const processedIcons = new WeakSet<HTMLElement>();
+
+const replaceIcon = async ({
   iconDom,
   filenameDom,
 }: {
   iconDom: HTMLElement | null;
   filenameDom: HTMLElement;
 }) => {
+  if (!iconDom || !filenameDom) {
+    return;
+  }
+
+  // Skip if already processed
+  if (processedIcons.has(iconDom)) {
+    return;
+  }
+
   const filename =
     isGitHub && isMobile
       ? getGitHubMobileFilename(filenameDom)
       : filenameDom.textContent?.trim() ?? '';
 
-  if (iconDom && iconDom.classList.contains('octicon-file-directory')) {
+  if (!filename) {
     return;
   }
 
-  const getIconColorMode = (): ColorMode => {
-    if (colorsDisabled) {
-      return 'mono';
-    }
+  // Check if it's a folder using improved detection
+  const isFolderItem = isFolder(iconDom, filenameDom);
 
-    if (siteDarkMode) {
-      return 'dark';
-    }
+  try {
+    // Create the appropriate icon element
+    const iconElement = isFolderItem
+      ? await createFolderIconElement(filename.replace(/\/$/, '')) // Remove trailing slash
+      : await createFileIconElement(filename);
 
-    return 'light';
-  };
+    // Mark as processed before replacing
+    processedIcons.add(iconElement);
 
-  const className = getIconClass(filename, {
-    colorMode: getIconColorMode(),
-    skipFallback: true,
-  });
-
-  if (!className) {
-    return;
-  }
-
-  const darkClassName = darkMode ? 'dark' : '';
-
-  if (className) {
-    const icon = document.createElement('span');
-
+    // Preserve GitHub-specific classes
     if (isGitHub) {
-      icon.className = `icon octicon-file ${className} ${darkClassName}`;
+      // Copy over relevant classes from original icon
+      const relevantClasses = Array.from(iconDom.classList).filter(
+        cls => cls.includes('color') || cls.includes('octicon')
+      );
+
+      iconElement.classList.add('octicon-file');
+      relevantClasses.forEach(cls => iconElement.classList.add(cls));
+
+      if (darkMode) {
+        iconElement.classList.add('dark');
+      }
     } else {
-      icon.className = `${className} ${darkClassName}`;
-      icon.style.marginRight = '3px';
+      iconElement.style.marginRight = '3px';
     }
 
-    if (iconDom?.parentNode) {
-      iconDom.parentNode.replaceChild(icon, iconDom as HTMLElement);
+    // Replace the old icon with the new SVG icon
+    if (iconDom.parentNode) {
+      iconDom.parentNode.replaceChild(iconElement, iconDom);
     }
+  } catch (error) {
+    console.error(`[GitHub File Icons] Failed to replace icon for ${filename}:`, error);
   }
 };
 
-const update = () => {
+const update = async () => {
   const filenameDoms = select.all(filenameSelector);
   const iconDoms = select.all(iconSelector);
 
   for (let i = 0; i < filenameDoms.length; i += 1) {
-    replaceIcon({
+    await replaceIcon({
       iconDom: iconDoms[i],
       filenameDom: filenameDoms[i],
     });
@@ -202,7 +255,13 @@ const replaceGithubFileIcons = (
 };
 
 const init = async () => {
-  loadFonts();
+  console.log('[GitHub File Icons] Initializing...');
+
+  // Inject CSS styles for SVG icons
+  injectIconStyles();
+
+  // Preload common icons for better performance
+  await preloadCommonIcons();
 
   await domLoaded;
 
@@ -211,12 +270,15 @@ const init = async () => {
       document.querySelector('html')?.getAttribute('data-color-mode') ===
       'dark';
 
+    console.log('[GitHub File Icons] GitHub detected, dark mode:', siteDarkMode);
+
     if (isGithubFilesPage()) {
       replaceGithubFileIcons(
         'ul.ActionList > li[id^=file-tree-item-diff-][role=treeitem]',
         'a > span:nth-child(2)',
       );
     } else {
+      // Observe all the different GitHub layouts
       replaceGithubFileIcons(
         '.js-navigation-container > .js-navigation-item',
         'div[role="rowheader"] > span',
@@ -227,16 +289,37 @@ const init = async () => {
         'span.PRIVATE_TreeView-item-content-text',
       );
 
+      // File icons
       replaceGithubFileIcons(
         '.react-directory-filename-column',
         '.react-directory-truncate',
         'svg:not(.icon-directory)',
       );
+
+      // Folder icons - observe separately
+      replaceGithubFileIcons(
+        '.react-directory-filename-column',
+        '.react-directory-truncate',
+        'svg.icon-directory',
+      );
+
+      // Also observe the parent container for folders
+      observe('[role="row"]:has(a[href*="/tree/"])', {
+        add(element) {
+          const filenameDom = select('.react-directory-truncate', element);
+          const iconDom = select('svg', element);
+          if (filenameDom && iconDom) {
+            replaceIcon({ iconDom, filenameDom });
+          }
+        },
+      });
     }
   } else {
-    update();
-    document.addEventListener('pjax:end', update);
+    await update();
+    document.addEventListener('pjax:end', () => update());
   }
+
+  console.log('[GitHub File Icons] Initialization complete');
 };
 
 chrome.storage.sync.get(
@@ -255,6 +338,7 @@ chrome.storage.sync.get(
 
 chrome.runtime.onMessage.addListener(function (request) {
   if (request.message === 'file-icon-extension-page-update') {
+    console.log('[GitHub File Icons] Page update detected, reinitializing...');
     // reinitialize after page update
     init();
   }

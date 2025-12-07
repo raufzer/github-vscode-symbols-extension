@@ -1,10 +1,25 @@
-@import 'atom-file-icons/dist/index.css';
-
-.database-icon::before {
-  left: 2px;
+/* VSCode Symbols Icon Styles */
+.vscode-file-icon,
+.vscode-folder-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.dark {
-  filter: brightness(125%) contrast(150%) drop-shadow(0 0 0 #fff)
-    drop-shadow(1px 1px 1px #444);
+.vscode-file-icon svg,
+.vscode-folder-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* Dark mode support */
+.dark .vscode-file-icon svg,
+.dark .vscode-folder-icon svg {
+  filter: brightness(125%) contrast(150%) drop-shadow(0 0 0 #fff) drop-shadow(1px 1px 1px #444);
+}
+
+[data-color-mode="dark"] .vscode-file-icon svg,
+[data-color-mode="dark"] .vscode-folder-icon svg {
+  filter: brightness(125%) contrast(150%);
 }

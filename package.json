@@ -1,29 +1,36 @@
 {
-  "name": "github-file-icons",
-  "version": "1.6.0",
-  "description": "A browser extension which gives different filetypes different icons to GitHub, GitLab, gitea and gogs.",
+  "name": "github-file-icons-vscode",
+  "version": "2.0.0",
+  "description": "A browser extension that brings VSCode-style file and folder icons to GitHub, GitLab, Gitea, and Gogs.",
   "license": "MIT",
-  "author": "homerchen19",
-  "homepage": "https://github.com/homerchen19/github-file-icons#readme",
+  "author": "raufzer <zerkhefabdraouf@gmail.com>",
+  "homepage": "https://github.com/raufzer/github-vscode-symbols-extension",
   "repository": {
     "type": "git",
-    "url": "https://github.com/homerchen19/github-file-icons/tree/master"
+    "url": "https://github.com/raufzer/github-vscode-symbols-extension.git"
   },
   "bugs": {
-    "url": "https://github.com/homerchen19/github-file-icons/issues"
+    "url": "https://github.com/raufzer/github-vscode-symbols-extension/issues"
   },
+  "keywords": [
+    "github",
+    "gitlab",
+    "file-icons",
+    "vscode",
+    "vscode-symbols",
+    "browser-extension",
+    "chrome-extension",
+    "firefox-addon"
+  ],
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js --progress",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "yarn run lint --fix",
-    "pre-commit": "lint-staged",
-    "prepare": "husky",
     "start": "cross-env NODE_ENV=development webpack --config ./webpack.config.js --watch",
     "zip": "yarn run build && zip -r build/File_Icon_For_GitHub_And_GitLab_$npm_package_version.zip build",
     "zip:firefox": "yarn run build && web-ext build -s build/"
   },
   "dependencies": {
-    "atom-file-icons": "^1.0.3",
     "dom-loaded": "^3.1.0",
     "is-mobile": "^5.0.0",
     "select-dom": "^7.1.1",
@@ -59,11 +66,6 @@
     "webpack-ext-reloader": "^1.1.13",
     "write-file-webpack-plugin": "^4.5.1"
   },
-  "keywords": [
-    "Chrome Extension",
-    "GitHub",
-    "icon"
-  ],
   "lint-staged": {
     "package.json": [
       "prettier-package-json --write"

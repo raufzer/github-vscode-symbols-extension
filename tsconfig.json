@@ -1,14 +1,28 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "lib": ["es6", "dom"],
+    "lib": [
+      "es6",
+      "dom"
+    ],
     "target": "es5",
     "allowJs": true,
     "moduleResolution": "node",
-    "types": ["chrome", "css-font-loading-module"],
+    "types": [
+      "chrome",
+      "css-font-loading-module"
+    ],
     "strict": true,
     "sourceMap": false
   },
-  "include": ["src/ts/*.ts"],
-  "exclude": ["node_modules", "build"]
+  "include": [
+    "src/ts/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ],
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js --progress"
+  }
 }

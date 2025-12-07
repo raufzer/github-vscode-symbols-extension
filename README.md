@@ -1,57 +1,135 @@
-<h1 align="center"><img src="https://github.com/homerchen19/github-file-icons/raw/master/src/img/icon-128.png" />
-<br>GitHub File Icons</h1>
-
-<h4 align="center">A simple browser extension changes file's icon on GitHub, GitLab, Gitea and Gogs.</h4>
-<br>
-<p align="center">
-  <a target="_blank" href="https://opensource.org/licenses/MIT" title="License: MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
-  <a target="_blank" href="http://makeapullrequest.com" title="PRs Welcome"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
-  <a href="https://apps.apple.com/app/file-icons-for-github/id1631366167"><img src="https://badgen.net/badge/icon/Safari/blue?icon=apple&label"></a>
-  <a href="https://chrome.google.com/webstore/detail/github-file-icons/ficfmibkjjnpogdcfhfokmihanoldbfe"><img src="https://badgen.net/badge/icon/Chrome/blue?icon=chrome&label"></a>
-  <a href="https://addons.mozilla.org/en-US/firefox/addon/github-file-icons/"><img src="https://badgen.net/badge/icon/Firefox/blue?icon=firefox&label"></a>
-</p>
+<h1 align="center">  <img src="src/img/icon-128.png" alt="Extension Icon" width="128">
+<br>GitHub File Icons (VSCode Symbols Edition)</h1>
 
 <p align="center">
-  <img width="45%" alt="light mode" src="https://user-images.githubusercontent.com/17788706/175958592-61fe3ca2-9d97-4419-a35e-4da4bac6230c.png">&nbsp; &nbsp; &nbsp; &nbsp;
-  <img width="45%" alt="dark mode" src="https://user-images.githubusercontent.com/17788706/175958583-7d9386dd-44ee-4215-8f4f-c4b9b6151a3e.png">
+  <a href="../../releases"><img src="https://img.shields.io/github/v/release/raufzer/github-vscode-symbols-extension" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+  <img src="https://img.shields.io/badge/browser-Chrome%20%7C%20Firefox%20%7C%20Edge-blue" alt="Browsers">
 </p>
+A browser extension that brings **VSCode-style file and folder icons** to GitHub, GitLab, Gitea, and Gogs.
 
-## Install
+This is a fork of [homerchen19/github-file-icons](https://github.com/homerchen19/github-file-icons) with enhanced icon support using the beautiful [VSCode Symbols](https://github.com/vscode-symbols/vscode-symbols) icon set.
 
-- <a href="https://chrome.google.com/webstore/detail/github-file-icons/ficfmibkjjnpogdcfhfokmihanoldbfe">Chrome Extension</a>
-- <a href="https://addons.mozilla.org/en-US/firefox/addon/github-file-icons/">Firefox Extension</a>
-- <a href="https://apps.apple.com/app/file-icons-for-github/id1631366167">Safari Extension</a> built by <a href="https://github.com/christopherpickering">@christopherpickering</a>
+## Features
 
-> ⚠️ If you enjoy the Safari extension please consider [contributing](https://github.com/sponsors/christopherpickering) to help cover the App Store fees.
+- **250+ VSCode-style SVG icons** for files and folders
+- **Smart folder detection** - Automatic icons for common folder names (src, test, config, etc.)
+- **Dark mode support** - Icons adapt to GitHub's theme
+- **Lightweight & Fast** - Icons load on-demand for optimal performance
+- **Framework-aware** - Special icons for React, Vue, Angular, Next.js, and more
+- **Config file recognition** - Distinct icons for package.json, tsconfig.json, .eslintrc, etc.
 
-## Options
+## Screenshots
 
-Right click on the extension's icon to open the menu.
+### Light Mode
 
-### Change image colors
+![Light Mode Example](screenshots/light-mode.png)
 
-Change icon's color between colorful and monochrome.
+### Dark Mode
 
-##### Comparison:
+![Dark Mode Example](screenshots/dark-mode.png)
 
-<img width="157" alt="screen shot 2018-08-07 at 11 56 51" src="https://user-images.githubusercontent.com/12113222/43754021-f9b40946-9a4b-11e8-8144-ab7cb5cbea8e.png">
+## Installation
 
-### Toggle Dark Mode
+### Chrome/Edge/Brave
 
-Make icons brighter and more readable on [GitHub dark theme](https://github.com/StylishThemes/GitHub-Dark).
+1. Download the latest release from [Releases](../../releases)
+2. Extract the ZIP file
+3. Open `chrome://extensions/`
+4. Enable "Developer mode"
+5. Click "Load unpacked"
+6. Select the extracted folder
 
-##### Comparison:
+### Firefox
 
-![brightness comparison](https://user-images.githubusercontent.com/454813/38455054-4a924cf4-3a40-11e8-86d6-29a030dfde49.jpg)
+1. Download the latest Firefox release from [Releases](../../releases)
+2. Open `about:debugging#/runtime/this-firefox`
+3. Click "Load Temporary Add-on"
+4. Select the `.xpi` file
 
-### Enable on custom domain
+## Development & Testing
 
-Navigate to your self-hosted Git site. Right click on the extension's icon in the browser bar and click "Enable File Icon for GitHub and GitLab on this domain".
+Want to try it before release? Here's how to run it locally:
 
-![Screen Shot 2019-08-08 at 21 01 19](https://user-images.githubusercontent.com/12113222/62698132-b7af9200-ba1f-11e9-9edc-396b6b9295be.png)
+### Prerequisites
+
+- Node.js 16+ (if using build tools)
+- Chrome, Firefox, or Edge browser
+
+### Quick Start
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/raufzer/github-vscode-symbols-extension.git
+   cd github-vscode-symbols-extension
+   ```
+
+2. **Load in Chrome/Edge**
+   - Open `chrome://extensions/`
+   - Enable "Developer mode" (top right)
+   - Click "Load unpacked"
+   - Select the `src` folder (or root folder with manifest.json)
+
+3. **Load in Firefox**
+   - Open `about:debugging#/runtime/this-firefox`
+   - Click "Load Temporary Add-on"
+   - Select `manifest.json` from the extension folder
+
+4. **Test it**
+   - Navigate to any GitHub repository
+   - Icons should appear next to files and folders
+   - Try switching between light/dark themes
+
+### Making Changes
+
+- Edit files in `src/`
+- Reload the extension in your browser
+- Refresh the GitHub page to see changes
+
+### Building for Distribution
+
+*Coming soon - packaging instructions for Chrome Web Store and Firefox Add-ons*
+
+## Icon Credits
+
+This extension uses the amazing [VSCode Symbols](https://github.com/vscode-symbols/vscode-symbols) icon set, which provides:
+
+- Beautiful, consistent design language
+- Comprehensive file type coverage
+- Official VSCode icon aesthetics
+- MIT licensed icons
+
+## Original Project
+
+This is a fork of [github-file-icons](https://github.com/homerchen19/github-file-icons) by [@homerchen19](https://github.com/homerchen19).
 
 ## License
 
-MIT © [homerchen19](https://github.com/homerchen19)
+MIT License - see [LICENSE](LICENSE) for details
 
-> Inspired by [file-icons/atom](https://github.com/file-icons/atom)
+### Third-Party Licenses
+
+- [VSCode Symbols Icons](https://github.com/vscode-symbols/vscode-symbols) - MIT License
+- Original [github-file-icons](https://github.com/homerchen19/github-file-icons) - MIT License
+
+## Show Your Support
+
+If you find this extension useful:
+
+- Star this repository
+- Report bugs or request features
+- Share with others
+
+
+# Changelog
+
+## [1.0.0] - 2025-12-07
+
+### Added
+
+- Initial release
+- 250+ VSCode-style file and folder icons
+- Support for GitHub, GitLab, Gitea, and Gogs
+- Dark mode support
+- Smart folder detection

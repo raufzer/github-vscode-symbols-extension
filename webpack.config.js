@@ -75,6 +75,10 @@ const options = {
           from: 'src/img',
           to: 'img',
         },
+        {
+          from: 'src/icons/vscode-symbols',
+          to: 'icons/vscode-symbols',
+        },
       ],
     }),
     new WriteFilePlugin(),
