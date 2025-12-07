@@ -6,7 +6,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
   <img src="https://img.shields.io/badge/browser-Chrome%20%7C%20Firefox%20%7C%20Edge-blue" alt="Browsers">
 </p>
-A browser extension that brings **VSCode-style file and folder icons** to GitHub, GitLab, Gitea, and Gogs.
+A browser extension that brings VSCode-style file and folder icons to GitHub, GitLab, Gitea, and Gogs.
 
 This is a fork of [homerchen19/github-file-icons](https://github.com/homerchen19/github-file-icons) with enhanced icon support using the beautiful [VSCode Symbols](https://github.com/vscode-symbols/vscode-symbols) icon set.
 
@@ -15,7 +15,8 @@ This is a fork of [homerchen19/github-file-icons](https://github.com/homerchen19
 - **250+ VSCode-style SVG icons** for files and folders
 - **Smart folder detection** - Automatic icons for common folder names (src, test, config, etc.)
 - **Dark mode support** - Icons adapt to GitHub's theme
-- **Lightwei# Changelog
+
+# Changelog
 
 ## [2.0.0] - 2025-12-07
 
@@ -31,13 +32,7 @@ This is a fork of [homerchen19/github-file-icons](https://github.com/homerchen19
 
 ## Screenshots
 
-### Light Mode
 
-![Light Mode Example](screenshots/light-mode.png)
-
-### Dark Mode
-
-![Dark Mode Example](screenshots/dark-mode.png)
 
 ## Installation
 
@@ -49,13 +44,6 @@ This is a fork of [homerchen19/github-file-icons](https://github.com/homerchen19
 4. Enable "Developer mode"
 5. Click "Load unpacked"
 6. Select the extracted folder
-
-### Firefox
-
-1. Download the latest Firefox release from [Releases](../../releases)
-2. Open `about:debugging#/runtime/this-firefox`
-3. Click "Load Temporary Add-on"
-4. Select the `.xpi` file
 
 ## Development & Testing
 
