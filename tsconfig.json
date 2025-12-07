@@ -20,7 +20,7 @@
   ],
   "exclude": [
     "node_modules",
-    "build"
+    "extension"
   ],
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js --progress"

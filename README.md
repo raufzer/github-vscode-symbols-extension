@@ -43,7 +43,7 @@ This is a fork of [homerchen19/github-file-icons](https://github.com/homerchen19
 3. Open `chrome://extensions/`
 4. Enable "Developer mode"
 5. Click "Load unpacked"
-6. Select the extracted folder
+6. Select the `extension` folder from the extracted files
 
 ## Development & Testing
 
@@ -67,12 +67,12 @@ Want to try it before release? Here's how to run it locally:
    - Open `chrome://extensions/`
    - Enable "Developer mode" (top right)
    - Click "Load unpacked"
-   - Select the `src` folder (or root folder with manifest.json)
+   - Select the `/extension` folder
 
 3. **Load in Firefox**
    - Open `about:debugging#/runtime/this-firefox`
    - Click "Load Temporary Add-on"
-   - Select `manifest.json` from the extension folder
+   - Select `manifest.json` from the `/extension` folder
 
 4. **Test it**
    - Navigate to any GitHub repository
@@ -81,13 +81,48 @@ Want to try it before release? Here's how to run it locally:
 
 ### Making Changes
 
-- Edit files in `src/`
-- Reload the extension in your browser
-- Refresh the GitHub page to see changes
+If you want to modify the extension:
+
+1. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+2. **Edit files in `src/`**
+
+3. **Rebuild the extension**
+
+   ```bash
+   npm run build
+   ```
+
+4. **Reload the extension** in your browser and refresh the GitHub page
+
+### Development Mode
+
+For faster development with auto-rebuild:
+
+```bash
+npm install
+npm start
+```
+
+This runs webpack in watch mode, automatically rebuilding the `extension/` folder when you make changes to source files.
 
 ### Building for Distribution
 
-*Coming soon - packaging instructions for Chrome Web Store and Firefox Add-ons*
+To create a production build:
+
+```bash
+npm run build
+```
+
+To create a ZIP file for distribution:
+
+```bash
+npm run zip
+```
 
 ## Icon Credits
 
