@@ -2,7 +2,7 @@
 <br>GitHub File Icons (VSCode Symbols Edition)</h1>
 
 <p align="center">
-  <a href="../../releases"><img src="https://img.shields.io/github/v/release/raufzer/github-vscode-symbols-extension" alt="Release"></a>
+  <img src="https://img.shields.io/badge/version-2.0.0-blue" alt="Version">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
   <img src="https://img.shields.io/badge/browser-Chrome%20%7C%20Firefox%20%7C%20Edge-blue" alt="Browsers">
 </p>
@@ -15,7 +15,17 @@ This is a fork of [homerchen19/github-file-icons](https://github.com/homerchen19
 - **250+ VSCode-style SVG icons** for files and folders
 - **Smart folder detection** - Automatic icons for common folder names (src, test, config, etc.)
 - **Dark mode support** - Icons adapt to GitHub's theme
-- **Lightweight & Fast** - Icons load on-demand for optimal performance
+- **Lightwei# Changelog
+
+## [2.0.0] - 2025-12-07
+
+### Added
+
+- Initial release
+- 250+ VSCode-style file and folder icons
+- Support for GitHub, GitLab, Gitea, and Gogs
+- Dark mode support
+- Smart folder detectionght & Fast** - Icons load on-demand for optimal performance
 - **Framework-aware** - Special icons for React, Vue, Angular, Next.js, and more
 - **Config file recognition** - Distinct icons for package.json, tsconfig.json, .eslintrc, etc.
 
@@ -120,16 +130,3 @@ If you find this extension useful:
 - Star this repository
 - Report bugs or request features
 - Share with others
-
-
-# Changelog
-
-## [1.0.0] - 2025-12-07
-
-### Added
-
-- Initial release
-- 250+ VSCode-style file and folder icons
-- Support for GitHub, GitLab, Gitea, and Gogs
-- Dark mode support
-- Smart folder detection
